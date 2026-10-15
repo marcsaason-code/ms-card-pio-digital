@@ -175,7 +175,7 @@ window.MENU_CONFIG = {
     ],
     "enabled": true
   },
-  "developedBy": "MSCardápioDigital",
+  "developedBy": "_marc.sd",
   "payments": {
     "methods": [
       {
@@ -200,7 +200,8 @@ window.MENU_CONFIG = {
     "pixCity": "São Paulo",
     "pixDemo": false,
     "pixBank": ""
-  }
+  },
+  "developerWhatsapp": "5512988865819"
 };
 </script>
 <!-- 2. APARÊNCIA -->
@@ -310,6 +311,8 @@ footer .developer-credit{font-size:11px;line-height:1.6;color:var(--muted);margi
 .cart-direction .ui-arrow{width:17px;height:17px}
 @media(max-width:760px){.detail-link .ui-arrow{width:14px;height:14px}}
 
+
+.developer-credit a{color:inherit;text-decoration:none;border-bottom:1px solid transparent}.developer-credit a:hover{color:var(--orange);border-bottom-color:currentColor}
 </style></head><body>
 <div class="menu-shell"><header class="top"><button id="themeToggle" class="theme-toggle" aria-label="Ativar modo claro" aria-pressed="false">☀</button><a class="brand-lockup" href="#" aria-label="Início"><span class="brand-symbol" aria-hidden="true">♨</span><span class="wordmark brand-word">brasa</span><span class="brand-caption">COZINHA & FOGO</span></a><button id="info" class="info-button" aria-label="Informações do restaurante"><span aria-hidden="true">☰</span></button></header>
 <main><section class="intro"><div class="intro-copy"><span id="heroEyebrow" class="eyebrow">FEITO NA BRASA</span><h1 id="heroTitle">Cardápio Digital</h1><p id="heroDescription">Ingredientes de verdade. Feitos para o seu momento.</p></div><div class="hero-photo"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Hambúrguer artesanal" fetchpriority="high"><span class="photo-stamp">100%<small>NA BRASA</small></span><span class="photo-caption">ARTESANAL</span></div></section>
@@ -317,7 +320,7 @@ footer .developer-credit{font-size:11px;line-height:1.6;color:var(--muted);margi
 
 <div class="mode-switch" aria-label="Modo de uso"><button id="browseMode" class="selected" aria-pressed="true">Consultar cardápio</button><button id="deliveryMode" aria-pressed="false">Delivery <svg class="ui-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></button></div><p class="mode-hint" id="modeHint">Conheça os sabores e detalhes de cada opção.</p><section id="menu" class="menu"><div class="menu-head"><div><span class="eyebrow">A sua melhor escolha</span><h2>Faça seu pedido</h2></div><label class="search"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Buscar um sabor…" aria-label="Buscar no cardápio"></label></div><nav id="categories" aria-label="Categorias"></nav><div class="section-label"><span class="section-line"></span><h3 id="sectionTitle">Destaques</h3><span class="section-line"></span></div><p id="results" class="results"></p><div class="grid" id="products"></div><p id="empty" hidden>Nenhum produto encontrado. Tente outro nome ou categoria.</p></section>
 <section class="bottom-banner"><span aria-hidden="true">✦</span><div><h3 id="bannerTitle">Cada detalhe, um novo sabor.</h3><p id="bannerDescription">Toque nas opções e conheça nossos ingredientes.</p></div></section>
-<footer><div class="footer-logo" id="footerLogo"></div><p class="developer-credit" id="developerCredit">Desenvolvido por MSCardápioDigital</p></footer></main></div>
+<footer><div class="footer-logo" id="footerLogo"></div><p class="developer-credit">Desenvolvido por <a id="developerCredit" href="https://wa.me/5512988865819" target="_blank" rel="noopener noreferrer" aria-label="Fale com _marc.sd pelo WhatsApp">_marc.sd</a></p></footer></main></div>
 <dialog id="productDialog"><div id="productContent"></div></dialog><dialog id="infoDialog"><div class="dialog-head"><div><h2 id="storeWelcome">Seja bem-vindo ao Brasa Burger</h2></div><button class="close" data-close="infoDialog" aria-label="Fechar informações">×</button></div><div class="info-content" id="storeInfo"></div></dialog>
 <button id="cartBar" class="cart-bar" hidden><span><b id="cartCount">0</b> Ver meu pedido</span><strong id="cartTotal">R$ 0,00</strong><span class="cart-direction"><svg class="ui-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7M7 7h10v10"/></svg></span></button><dialog id="cartDialog"><div class="dialog-head"><div><span class="eyebrow">DELIVERY</span><h2>Seu pedido</h2></div><button class="close" data-close="cartDialog" aria-label="Fechar pedido">×</button></div><div id="cartContent"></div></dialog><div id="toast" role="status" hidden></div><script id="fotos-incorporadas">
 // FOTOS INCORPORADAS: não é necessário editar este bloco.
@@ -2705,7 +2708,10 @@ document.querySelectorAll('.brand-word').forEach(el=>el.textContent=config.brand
 
 if(config.logoImage){const img=document.createElement('img');img.src=config.logoImage;img.alt=config.name;img.className='header-logo';$('.brand-lockup').replaceChildren(img);}
 $('#footerLogo').replaceChildren(...[...$('.brand-lockup').childNodes].map(node=>node.cloneNode(true)));
-text('#developerCredit',config.developedBy?'Desenvolvido por '+config.developedBy:'Desenvolvido por');
+text('#developerCredit',config.developedBy||'');
+const developerPhone=String(config.developerWhatsapp||'').replace(/\D/g,'');
+if(/^[1-9]\d{9,14}$/.test(developerPhone))$('#developerCredit').href='https://wa.me/'+developerPhone;else $('#developerCredit').removeAttribute('href');
+$('#developerCredit').setAttribute('aria-label','Fale com '+(config.developedBy||'o desenvolvedor')+' pelo WhatsApp');
 
 text('#heroEyebrow',config.hero.eyebrow);text('#heroTitle',config.hero.title+' ');const em=document.createElement('em');em.textContent=config.hero.highlight;$('#heroTitle').append(em);
 text('#heroDescription',config.hero.description);$('.hero-photo>img').src=config.hero.image;$('.hero-photo>img').alt=config.hero.imageAlt;
